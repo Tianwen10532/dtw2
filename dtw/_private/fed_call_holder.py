@@ -40,12 +40,13 @@ class FedActorMethod:
         fed_actor_handle,
     ):
         self.method_name=method_name
-        self.fed_actor_handle=fed_actor_handle
-        self._remote_actor_handle = self.fed_actor_handle._remote_actor_handle
+        self.cluster=fed_actor_handle._remote_actor_handle['cluster']
+        self.ivkport=fed_actor_handle._remote_actor_handle['ivk_port']
+        # self._remote_actor_handle = self.fed_actor_handle._remote_actor_handle
         # {'status': 'success', 'cluster': '192.168.117.4', 'ivk_port': 31748, 'recv_port': 30319, 'rayjob_name': 'dtwrj-68iye3'}
     
     def remote(self, *args, **kwargs) -> DtwObject:
-        url = self._remote_actor_handle['cluster']+':'+str(self._remote_actor_handle['ivk_port'])
+        url = self.cluster+':'+str(self.ivkport)
         options = [('grpc.max_metadata_size', 4 * 1024 * 1024)]
         channel = grpc.insecure_channel(url,options=options)
         stub = invoke_pb2_grpc.InvokerStub(channel)
