@@ -134,7 +134,8 @@ class FedRemoteClass:
 
 def get(dtw_object:DtwObject):
     url = dtw_object.host+":"+str(dtw_object.port)
-    channel = grpc.insecure_channel(url)
+    options = [('grpc.max_metadata_size', 4 * 1024 * 1024)]
+    channel = grpc.insecure_channel(url, options=options)
     stub = invoke_pb2_grpc.InvokerStub(channel)
 
     while True:
