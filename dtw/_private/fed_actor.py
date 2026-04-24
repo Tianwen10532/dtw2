@@ -43,8 +43,10 @@ class FedActorHandle:
         self._remote_actor_handle = None
 
     def _get_stub(self):
+        options = [('grpc.max_metadata_size', 4 * 1024 * 1024)] 
         channel= grpc.insecure_channel(
-            f"{self._remote_actor_handle['cluster']}:{self._remote_actor_handle['ivk_port']}"
+            f"{self._remote_actor_handle['cluster']}:{self._remote_actor_handle['ivk_port']}",
+            options=options
         )
         return invoke_pb2_grpc.InvokerStub(channel)
 

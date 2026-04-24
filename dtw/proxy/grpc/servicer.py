@@ -183,7 +183,7 @@ def serve(actor_cls, my_env,addr="0.0.0.0:50051", rcv_addr="0.0.0.0:50052"):
     receiver_proxy=GrpcReceiverProxy(rcv_addr)
     receiver_proxy.start()
 
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1),options=[('grpc.max_metadata_size', 4 * 1024 * 1024)])
     ivk_serv = InvokerServicer(actor_cls,my_env,receiver_proxy)
     invoke_pb2_grpc.add_InvokerServicer_to_server(ivk_serv, server)
     server.add_insecure_port(addr)

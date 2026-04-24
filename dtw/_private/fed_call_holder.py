@@ -46,7 +46,8 @@ class FedActorMethod:
     
     def remote(self, *args, **kwargs) -> DtwObject:
         url = self._remote_actor_handle['cluster']+':'+str(self._remote_actor_handle['ivk_port'])
-        channel = grpc.insecure_channel(url)
+        options = [('grpc.max_metadata_size', 4 * 1024 * 1024)]
+        channel = grpc.insecure_channel(url,options=options)
         stub = invoke_pb2_grpc.InvokerStub(channel)
         resp = call_remote(stub, self.method_name, *args, **kwargs)
         # Objid: "81d5a37e-6a3c-42de-abd6-524c80ffe324"
