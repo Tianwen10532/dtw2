@@ -77,7 +77,7 @@ class FedActorHandle:
 
     def __getattr__(self, method_name: str):
         # getattr(self._body, method_name)
-        return FedActorMethod(method_name, self)
+        return FedActorMethod(method_name, self._remote_actor_handle['cluster'],self._remote_actor_handle['ivk_port'],)
 
     def free(self, route_url: str | None = None) -> dict[str, Any]:
         if self._remote_actor_handle:

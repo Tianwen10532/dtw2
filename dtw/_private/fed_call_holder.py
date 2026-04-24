@@ -37,11 +37,12 @@ class FedActorMethod:
     def __init__(
         self,
         method_name,
-        fed_actor_handle,
+        cluster,
+        ivkport,
     ):
         self.method_name=method_name
-        self.cluster=fed_actor_handle._remote_actor_handle['cluster']
-        self.ivkport=fed_actor_handle._remote_actor_handle['ivk_port']
+        self.cluster=cluster
+        self.ivkport=ivkport
         # self._remote_actor_handle = self.fed_actor_handle._remote_actor_handle
         # {'status': 'success', 'cluster': '192.168.117.4', 'ivk_port': 31748, 'recv_port': 30319, 'rayjob_name': 'dtwrj-68iye3'}
     
