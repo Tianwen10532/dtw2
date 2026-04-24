@@ -33,7 +33,7 @@ class F1:
     
 
 def main():
-    f1 = F1.res_req(target_cluster_url="http://10.0.1.10:30080").task_cha().remote()
+    f1 = F1.res_req(target_cluster_url="http://10.0.2.10:30080",runtime='pod').task_cha().remote()
     # f2 = F2.res_req(target_cluster_url="http://10.0.2.10:30080").task_cha().remote()
     # f3 = F3.res_req(target_cluster_url="http://10.0.3.10:30080").task_cha().remote()
     # f4 = F4.res_req(target_cluster_url="http://10.0.4.10:30080").task_cha().remote()
@@ -44,7 +44,7 @@ def main():
         print(f"i:{i}")
         f1o = f1.mul2.remote(i)
         print(f"f1o:{f1o}")
-        
+
         print(dtw.get(f1o))
 
         # f2o = f2.add1.remote(f1o)
