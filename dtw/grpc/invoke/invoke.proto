@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option cc_generic_services = true;
+
+message PartyId{
+  string cmail = 1;
+  string cport = 2;
+  string dmail = 3;
+  string dport = 4;
+}
+
+message StartActorRequest {
+  PartyId your_global_id = 1;
+  bytes args_pickle = 2;   // (args, kwargs)
+}
+
+message StartActorResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message InvokeRequest {
+  string method = 1;       // 方法名
+  bytes args_pickle = 2;   // (args, kwargs)
+}
+
+message InvokeResponse {
+  bool success = 1;
+  string Objid = 2;
+  string SrcIpPort = 3;
+  string error = 4;
+}
+
+message ResultRequest {
+  string Objid = 1;
+  string ToIpPort = 2;
+}
+
+message ResultResponse {
+  bool success=1;
+}
+
+message GetDataRequest {
+  string Objid = 1;
+}
+
+message GetDataResponse {
+  bytes data = 1;
+  bool ready = 2;
+}
+
+service Invoker {
+  rpc StartActor(StartActorRequest) returns (StartActorResponse);
+  rpc Invoke(InvokeRequest) returns (InvokeResponse);
+  rpc GetResult(ResultRequest) returns (ResultResponse);
+  rpc GetData(GetDataRequest) returns (GetDataResponse);
+}

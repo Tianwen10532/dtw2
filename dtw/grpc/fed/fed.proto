@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option cc_generic_services = true;
+
+service GrpcService {
+    rpc SendData (SendDataRequest) returns (SendDataResponse) {}
+}
+
+message SendDataRequest {
+    bytes data = 1;
+    string Objid = 2;
+};
+
+message SendDataResponse {
+    int32 code = 1;
+    string result = 2;
+};
+
+//python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. fed.proto 
