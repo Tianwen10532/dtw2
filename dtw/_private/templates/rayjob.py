@@ -97,7 +97,7 @@ spec:
     pip:
       # - grpcio==1.75.1 
       # - grpcio-tools==1.75.1
-      - git+https://github.com/Tianwen10532/dtw.git
+      - git+https://github.com/Tianwen10532/dtw2.git
   #   env_vars:
   #     counter_name: "test_counter"
   shutdownAfterJobFinishes: true
@@ -136,7 +136,7 @@ spec:
         EOM
         printf "%s" "$SCRIPT" > "actorserve.py";
 
-        python -m pip install --no-cache-dir git+https://github.com/Tianwen10532/dtw.git;
+        python -m pip install --no-cache-dir git+https://github.com/Tianwen10532/dtw2.git;
         ulimit -n 65536; python actorserve.py
     env:
     - name: NODE_IP
