@@ -26,13 +26,14 @@ f1 = F1.res_req(target_cluster_url="http://10.0.1.10:30080",runtime='pod').task_
 f1ip = dtw.get(f1.get_node_ip.remote())
 print(f1ip)
 
-f2 = f1.commit_F2.remote("http://10.0.2.10:30080",'pod')
-print(f2)
+# f2 = f1.commit_F2.remote("http://10.0.2.10:30080",'pod')
+# print(f2)
 
-f2 = dtw.get(f2)
+# f2 = dtw.get(f2)
+
 
 # f2ip=dtw.get(f2.get_node_ip.remote())
 # print(f2ip)
 
-# f1.free()
+f1.free()
 # f2.free()

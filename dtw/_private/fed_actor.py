@@ -21,8 +21,9 @@ from .control_client import start_actor
 
 from .templates.rayjob import gen_pod_yaml, gen_rayjob_yaml
 
+from dataclasses import dataclass
 
-
+@dataclass
 class FedActorHandle:
     def __init__(
         self,
