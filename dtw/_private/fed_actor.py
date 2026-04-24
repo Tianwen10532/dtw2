@@ -74,7 +74,7 @@ class FedActorHandle:
         start_actor(stub, your_global_id, *cls_args, **cls_kwargs)
 
     def __getattr__(self, method_name: str):
-        getattr(self._body, method_name)
+        # getattr(self._body, method_name)
         return FedActorMethod(method_name, self)
 
     def free(self, route_url: str | None = None) -> dict[str, Any]:
