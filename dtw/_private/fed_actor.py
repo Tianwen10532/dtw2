@@ -221,6 +221,7 @@ def _normalize_apply_response(body: dict[str, Any]) -> dict[str, Any]:
         selected_cluster = body.get("selected_cluster_base_url")
         if selected_cluster and "cluster_base_url" not in merged:
             merged["cluster_base_url"] = selected_cluster
+        merged["network_route"] = body.get('network_route') or None
         return merged
 
     # direct dtw-cluster response
