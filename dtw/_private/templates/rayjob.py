@@ -48,6 +48,9 @@ spec:
                 printf "%s" "$SCRIPT" > "actorserve.py";
                 
                 ulimit -n 65536; echo head; $KUBERAY_GEN_RAY_START_CMD
+            envFrom:
+              - configMapRef: 
+                  name: dtw-config
             env:
             - name: NODE_IP
               valueFrom:
@@ -88,6 +91,9 @@ spec:
             resources:
               requests:
                 cpu: "1"{worker_gpu_requests}{worker_gpu_limits}
+            envFrom:
+              - configMapRef: 
+                  name: dtw-config
             env:
             - name: NODE_IP
               valueFrom:
@@ -143,6 +149,9 @@ spec:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
+    envFrom:
+      - configMapRef: 
+          name: dtw-config
     ports:
     - containerPort: 50051
       name: invoke
