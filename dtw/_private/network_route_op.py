@@ -52,7 +52,7 @@ def network_route_apply(route,gateway,dst_ips,src_ip):
     )
     url = gateway+"/apply"
     response = requests.post(url, json=data.model_dump()).json()
-    return data, response.get('policy_id')
+    return response.get('policy_id')
 
 def network_route_del(route,gateway,dst_ips,src_ip,policy_id):
     req_data = DeleteRequest(

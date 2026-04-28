@@ -165,6 +165,7 @@ class FedActorHandle:
                     "message": "failed to kill local actor",
                     "error": str(exc),
                 }
+            
         if self.policy_id is not None:
             response=self._remote_actor_handle
             network_route_del(response['network_route'],response['network_gateway'],response['network_dst_ips'],response['network_src_ip'],self.policy_id)
@@ -425,7 +426,7 @@ serve(actor_cls,my_env,addr=\"0.0.0.0:50051\", rcv_addr=\"0.0.0.0:50052\")
     wait_for_port(response["cluster"], response["ivk_port"], response["recv_port"])
     policy_id=None
     if response['network_route'] and response['network_gateway'] and response['network_dst_ips'] and response['network_src_ip']:
-        policy,policy_id = network_route_apply(response['network_route'],response['network_gateway'],response['network_dst_ips'],response['network_src_ip'])
+        policy_id = network_route_apply(response['network_route'],response['network_gateway'],response['network_dst_ips'],response['network_src_ip'])
 
     return response,policy_id
 
