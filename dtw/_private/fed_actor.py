@@ -17,6 +17,7 @@ import dtw.grpc.invoke.invoke_pb2 as invoke_pb2
 import dtw.grpc.invoke.invoke_pb2_grpc as invoke_pb2_grpc
 from dtw._private.fed_call_holder import FedActorMethod
 from .control_client import start_actor
+from .network_route_op import network_route_apply,network_route_del
 
 
 from .templates.rayjob import gen_pod_yaml, gen_rayjob_yaml
@@ -60,7 +61,7 @@ class FedActorHandle:
             )
             return
 
-        self._remote_actor_handle = generate_rayjob_yaml(
+        self._remote_actor_handle,self.policy_id = generate_rayjob_yaml(
             res_req=self._res_req,
             task_cha=self._task_cha,
             source_cache=self._source_cache,
@@ -164,6 +165,9 @@ class FedActorHandle:
                     "message": "failed to kill local actor",
                     "error": str(exc),
                 }
+        if self.policy_id is not None:
+            response=self._remote_actor_handle
+            network_route_del(response['network_route'],response['network_gateway'],response['network_dst_ips'],response['network_src_ip'],self.policy_id)
 
         return {"status": "noop", "message": "actor already released"}
 
@@ -221,7 +225,11 @@ def _normalize_apply_response(body: dict[str, Any]) -> dict[str, Any]:
         selected_cluster = body.get("selected_cluster_base_url")
         if selected_cluster and "cluster_base_url" not in merged:
             merged["cluster_base_url"] = selected_cluster
-        merged["network_route"] = body.get('network_route') or None
+        nbody = body.get("network_response") or {}
+        merged["network_route"] = nbody.get('network_route') or None
+        merged["network_gateway"]=nbody.get('gateway') or None
+        merged["network_dst_ips"]=nbody.get('dst_ips') or None
+        merged["network_src_ip"]=nbody.get('src_ip') or None
         return merged
 
     # direct dtw-cluster response
@@ -413,8 +421,13 @@ serve(actor_cls,my_env,addr=\"0.0.0.0:50051\", rcv_addr=\"0.0.0.0:50052\")
     response["resource_name"] = response.get("resource_name") or response.get("rayjob_name") or resource_name
     if not response.get("rayjob_name"):
         response["rayjob_name"] = response["resource_name"]
+    print(response)
     wait_for_port(response["cluster"], response["ivk_port"], response["recv_port"])
-    return response
+
+    if response['network_route'] and response['network_gateway'] and response['network_dst_ips'] and response['network_src_ip']:
+        policy,policy_id = network_route_apply(response['network_route'],response['network_gateway'],response['network_dst_ips'],response['network_src_ip'])
+
+    return response,policy_id
 
 
 def wait_for_port(host: str, port1: int, port2: int, interval: float = 2.0):
