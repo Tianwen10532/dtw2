@@ -332,16 +332,16 @@ def create_actor_req(
     body = response.json()
     normalized = _normalize_apply_response(body)
 
-    required = ("cluster", "ivk_port", "recv_port")
-    missing = [k for k in required if normalized.get(k) in (None, "")]
-    if missing:
-        raise RuntimeError(f"Apply response missing keys: {missing}, body={body}")
-    if normalized.get("resource_name") in (None, "") and normalized.get("rayjob_name") not in (None, ""):
-        normalized["resource_name"] = normalized.get("rayjob_name")
-    if normalized.get("rayjob_name") in (None, "") and normalized.get("resource_name") not in (None, ""):
-        normalized["rayjob_name"] = normalized.get("resource_name")
-    if normalized.get("resource_name") in (None, ""):
-        raise RuntimeError(f"Apply response missing resource_name/rayjob_name, body={body}")
+    # required = ("cluster", "ivk_port", "recv_port")
+    # missing = [k for k in required if normalized.get(k) in (None, "")]
+    # if missing:
+    #     raise RuntimeError(f"Apply response missing keys: {missing}, body={body}")
+    # if normalized.get("resource_name") in (None, "") and normalized.get("rayjob_name") not in (None, ""):
+    #     normalized["resource_name"] = normalized.get("rayjob_name")
+    # if normalized.get("rayjob_name") in (None, "") and normalized.get("resource_name") not in (None, ""):
+    #     normalized["rayjob_name"] = normalized.get("resource_name")
+    # if normalized.get("resource_name") in (None, ""):
+    #     raise RuntimeError(f"Apply response missing resource_name/rayjob_name, body={body}")
 
     if not normalized.get("cluster_base_url") and _is_scheduler_endpoint(normalized_route):
         inferred = _resolve_cluster_base_url(normalized_route, normalized.get("cluster"))
