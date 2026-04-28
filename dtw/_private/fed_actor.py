@@ -83,6 +83,10 @@ class FedActorHandle:
         return FedActorMethod(method_name, self._remote_actor_handle['cluster'],self._remote_actor_handle['ivk_port'],)
 
     def free(self, route_url: str | None = None) -> dict[str, Any]:
+        if self.policy_id is not None:
+            response=self._remote_actor_handle
+            network_route_del(response['network_route'],response['network_gateway'],response['network_dst_ips'],response['network_src_ip'],self.policy_id)
+
         if self._remote_actor_handle:
             used_route_url = route_url or self._remote_actor_handle.get("route_url")
             normalized_route = _normalize_route_url(used_route_url)
@@ -165,10 +169,6 @@ class FedActorHandle:
                     "error": str(exc),
                 }
             
-        if self.policy_id is not None:
-            response=self._remote_actor_handle
-            network_route_del(response['network_route'],response['network_gateway'],response['network_dst_ips'],response['network_src_ip'],self.policy_id)
-
         return {"status": "noop", "message": "actor already released"}
 
 
